@@ -23,38 +23,51 @@ class Menu extends StatefulWidget {
 }
 
 class _MenuState extends State<Menu> {
-  final CookieManager cookieManager=CookieManager();
-  
+  final CookieManager cookieManager = CookieManager();
+
   //tüm cookie'lerin listesini alma
-  Future<void> _onListCookies(WebViewController controller) async{
-    final String cookies= await controller.runJavascriptReturningResult('document.cookie');
-    if(!mounted) return;
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(cookies.isNotEmpty ? cookies : "Mevcut cookie yok")));
+  Future<void> _onListCookies(WebViewController controller) async {
+    final String cookies =
+        await controller.runJavascriptReturningResult('document.cookie');
+    if (!mounted) return;
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text(cookies.isNotEmpty ? cookies : "Mevcut cookie yok")));
   }
 
   //tüm cookie'leri temizleme
- /* WebView'daki tüm tanımlama bilgilerini temizlemek için CookieManager sınıfının clearCookies yöntemini kullanın. Bu method CookieManager tanımlama bilgilerini temizlediyse true, temizlenecek tanımlama bilgisi yoksa false döndürür (future<bool>)*/
+  /* WebView'daki tüm tanımlama bilgilerini temizlemek için CookieManager sınıfının clearCookies yöntemini kullanın. Bu method CookieManager tanımlama bilgilerini temizlediyse true, temizlenecek tanımlama bilgisi yoksa false döndürür (future<bool>)*/
 
-Future<void> _onClearCookies()async{
-  final hadCookies=await cookieManager.clearCookies(); //cookie varsa ve temizlendiyse geriye true yoksa false dönen method
-  String message="Cookie'ler temizlendi";
-  if(!hadCookies){
-    message="Temizlenecek Cookie yok";
+  Future<void> _onClearCookies() async {
+    final hadCookies = await cookieManager
+        .clearCookies(); //cookie varsa ve temizlendiyse geriye true yoksa false dönen method
+    String message = "Cookie'ler temizlendi";
+    if (!hadCookies) {
+      message = "Temizlenecek Cookie yok";
+    }
+    if (!mounted) return;
+    ScaffoldMessenger.of(context)
+        .showSnackBar(SnackBar(content: Text(message)));
   }
-  if(!mounted) return;
-  ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(message)));
-}
 
 //cookie ekleme //javascript ile yapılır
-  Future<void> _onAddCookie(WebViewController controller) async{
-  await controller.runJavascript('''var date= new Date();
+  Future<void> _onAddCookie(WebViewController controller) async {
+    await controller.runJavascript('''var date= new Date();
  date.setTime(date.getTime()+(30*24*60*60*1000));
   document.cookie = "FirstName=Gülseeeen; expires=" + date.toGMTString();''');
-  if(!mounted) return;
-  ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("cookie eklendi")));
-
+    if (!mounted) return;
+    ScaffoldMessenger.of(context)
+        .showSnackBar(SnackBar(content: Text("cookie eklendi")));
   }
 
+  //setting cookie with cookiemanager
+
+  Future<void> _onSetCookie(WebViewController controller) async {
+    await cookieManager.setCookie(
+        const WebViewCookie(name: "foo", value: "bar", domain: 'flutter.dev'));
+    if (!mounted) return;
+    ScaffoldMessenger.of(context)
+        .showSnackBar(const SnackBar(content: Text("Custom cookie is set")));
+  }
 
   @override
   Widget build(BuildContext context) {

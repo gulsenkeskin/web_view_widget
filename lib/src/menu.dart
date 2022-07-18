@@ -69,6 +69,14 @@ class _MenuState extends State<Menu> {
         .showSnackBar(const SnackBar(content: Text("Custom cookie is set")));
   }
 
+  //remove cookie
+  Future<void> _onRemoveCookie(WebViewController controller) async {
+    await controller.runJavascript(
+        'document.cookie="FirstName=Gulseeeen; expires=Thu, 01 Jan 1970 00:00:00 UTC" ');
+    if(!mounted) return;
+    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("cookie silindi")));
+  }
+
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<WebViewController>(

@@ -16,7 +16,7 @@
  
  HTML içeren varlıklardan, dosyalardan veya stringlerden HTML yükleme ve görüntüleme
  
-
+<br/>
 
  *Paketler:*
  
@@ -24,17 +24,20 @@
  
  path_provider //dosya sisteminde yaygın olarak kullanılan konumları bulmak için bir Flutter eklentisidir.
 
+<br/>
 
  *Page Load Events*
  
  WebView sayfa yükleme döngüsü sırasında tetiklenen üç farklı sayfa yükleme olayı vardır: onPageStarted, onProgress ve onPageFinished.
 
+<br/>
 
  *Navigation Delegate*
  
  Kullanıcı bir bağlantıya tıkladığında NavigationDelegate çağrılır. NavigationDelegate geri araması, WebView'ün navigasyonla devam edip etmediğini kontrol etmek için kullanılabilir
  
 
+<br/>
 
 *Evaluating JavaScript*
 

@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
-enum _MenuOptions { navigationDelegate, userAgent }
+enum _MenuOptions { navigationDelegate, userAgent, javascriptChannel }
 
 class Menu extends StatefulWidget {
   const Menu({required this.controller, Key? key}) : super(key: key);
@@ -32,6 +32,21 @@ class _MenuState extends State<Menu> {
                     ScaffoldMessenger.of(context)
                         .showSnackBar(SnackBar(content: Text(userAgent)));
                     break;
+                  /*Bu kod, Public IP Adresi API'sine bir GET isteği göndererek aygıtın IP adresini döndürür. Bu sonuç, SnackBar JavascriptChannel'da postMessage çağrılarak bir SnackBar'da gösterilir.*/
+                  case _MenuOptions.javascriptChannel:
+                    await controller.data!.runJavascript('''
+var req = new XMLHttpRequest();
+req.open('GET', "https://api.ipify.org/?format=json");
+req.onload = function() {
+  if (req.status == 200) {
+    let response = JSON.parse(req.responseText);
+    SnackBar.postMessage("IP Address: " + response.ip);
+  } else {
+    SnackBar.postMessage("Error: " + req.status);
+  }
+}
+req.send(); ''');
+                    break;
                 }
               },
               itemBuilder: (context) => [
@@ -40,7 +55,10 @@ class _MenuState extends State<Menu> {
                         child: Text('Navigate to YouTube')),
                     const PopupMenuItem<_MenuOptions>(
                         value: _MenuOptions.userAgent,
-                        child: Text("Show user-agent"))
+                        child: Text("Show user-agent")),
+                    const PopupMenuItem<_MenuOptions>(
+                        value: _MenuOptions.javascriptChannel,
+                        child: Text("Lookup IP Address"))
                   ]);
         });
   }

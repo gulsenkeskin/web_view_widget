@@ -1,5 +1,4 @@
-# web_view_widget
- *Flutter WebView widget*
+# *Flutter WebView widget*
  
  Web içeriğini bir WebView de görüntüleme
  

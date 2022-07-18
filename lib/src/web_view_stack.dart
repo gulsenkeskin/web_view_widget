@@ -58,4 +58,19 @@ class _WebViewStackState extends State<WebViewStack> {
       ],
     );
   }
+
+  Set<JavascriptChannel> _createJavascriptChannels(BuildContext context){
+    return {
+      JavascriptChannel(
+        name: 'SnackBar',
+        onMessageReceived: (message){
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(message.message)));
+        }
+      ),
+    };
+  }
+
+
+
+
 }

@@ -12,6 +12,7 @@
 
  Paketler:
  webview_flutter
+ path_provider //dosya sisteminde yaygın olarak kullanılan konumları bulmak için bir Flutter eklentisidir.
 
  Page Load Events
  WebView sayfa yükleme döngüsü sırasında tetiklenen üç farklı sayfa yükleme olayı vardır: onPageStarted, onProgress ve onPageFinished.

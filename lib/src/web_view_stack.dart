@@ -1,19 +1,20 @@
 // page load eventi ekleme
-
+import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 class WebViewStack extends StatefulWidget {
-  const WebViewStack({Key? key}) : super(key: key);
+  const WebViewStack({required this.controller, Key? key}) : super(key: key);
+
+  final Completer<WebViewController> controller;
 
   @override
   State<WebViewStack> createState() => _WebViewStackState();
 }
 
 class _WebViewStackState extends State<WebViewStack> {
-
-  var loadingPercentage=0;
+  var loadingPercentage = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -21,24 +22,29 @@ class _WebViewStackState extends State<WebViewStack> {
       children: [
         WebView(
           initialUrl: 'https://flutter.dev',
-          onPageStarted: (url){
+          onWebViewCreated: (webViewController) {
+            widget.controller.complete(webViewController);
+          },
+          onPageStarted: (url) {
             setState(() {
-              loadingPercentage=0;
+              loadingPercentage = 0;
             });
           },
-          onProgress: (progress){
+          onProgress: (progress) {
             setState(() {
-              loadingPercentage=progress;
+              loadingPercentage = progress;
             });
           },
-          onPageFinished: (url){
+          onPageFinished: (url) {
             setState(() {
-              loadingPercentage=100;
+              loadingPercentage = 100;
             });
           },
-
         ),
-        if(loadingPercentage<100) LinearProgressIndicator(value: loadingPercentage/100.0,)
+        if (loadingPercentage < 100)
+          LinearProgressIndicator(
+            value: loadingPercentage / 100.0,
+          )
       ],
     );
   }

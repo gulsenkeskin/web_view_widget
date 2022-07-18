@@ -73,8 +73,9 @@ class _MenuState extends State<Menu> {
   Future<void> _onRemoveCookie(WebViewController controller) async {
     await controller.runJavascript(
         'document.cookie="FirstName=Gulseeeen; expires=Thu, 01 Jan 1970 00:00:00 UTC" ');
-    if(!mounted) return;
-    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("cookie silindi")));
+    if (!mounted) return;
+    ScaffoldMessenger.of(context)
+        .showSnackBar(const SnackBar(content: Text("cookie silindi")));
   }
 
   @override
@@ -110,6 +111,26 @@ req.onload = function() {
 }
 req.send(); ''');
                     break;
+
+                  case _MenuOptions.clearCookies:
+                    await _onClearCookies();
+                    break;
+
+                  case _MenuOptions.listCookies:
+                    await _onListCookies(controller.data!);
+                    break;
+
+                  case _MenuOptions.addCookie:
+                    await _onAddCookie(controller.data!);
+                    break;
+
+                  case _MenuOptions.setCookie:
+                    await _onSetCookie(controller.data!);
+                    break;
+
+                  case _MenuOptions.removeCookie:
+                    await _onRemoveCookie(controller.data!);
+                    break;
                 }
               },
               itemBuilder: (context) => [
@@ -121,7 +142,27 @@ req.send(); ''');
                         child: Text("Show user-agent")),
                     const PopupMenuItem<_MenuOptions>(
                         value: _MenuOptions.javascriptChannel,
-                        child: Text("Lookup IP Address"))
+                        child: Text("Lookup IP Address")),
+                    const PopupMenuItem<_MenuOptions>(
+                      value: _MenuOptions.clearCookies,
+                      child: Text('Clear cookies'),
+                    ),
+                    const PopupMenuItem<_MenuOptions>(
+                      value: _MenuOptions.listCookies,
+                      child: Text('List cookies'),
+                    ),
+                    const PopupMenuItem<_MenuOptions>(
+                      value: _MenuOptions.addCookie,
+                      child: Text('Add cookie'),
+                    ),
+                    const PopupMenuItem<_MenuOptions>(
+                      value: _MenuOptions.setCookie,
+                      child: Text('Set cookie'),
+                    ),
+                    const PopupMenuItem<_MenuOptions>(
+                      value: _MenuOptions.removeCookie,
+                      child: Text('Remove cookie'),
+                    ),
                   ]);
         });
   }

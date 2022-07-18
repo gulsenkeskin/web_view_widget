@@ -49,6 +49,7 @@ class _WebViewStackState extends State<WebViewStack> {
             }
             return NavigationDecision.navigate;
           },
+          javascriptMode: JavascriptMode.unrestricted, //artık webview Javascripti çalıştırabilir
         ),
         if (loadingPercentage < 100)
           LinearProgressIndicator(
